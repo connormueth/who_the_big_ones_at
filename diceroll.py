@@ -27,23 +27,12 @@ def main():
         diceroll_2 = roll()
         diceroll_total = calc_total(diceroll_1, diceroll_2)
         counter += 1
-        display(counter, diceroll_1, diceroll_2, diceroll_total)
         rollcounts[diceroll_total] += 1
+        display(counter, diceroll_1, diceroll_2, diceroll_total)
         roll_again = input("Press ENTER to roll again\n"
-                           "Type 'exit' to view statistics and exit game")
-        if roll_again.lower() == "exit":
-            print("Game Statistics")
-            print("2s count:  {}  --  {:.1f}%".format(rollcounts[2], (rollcounts[2] / counter)* 100))
-            print("3s count:  {}  --  {:.1f}%".format(rollcounts[3], (rollcounts[3] / counter)* 100))
-            print("4s count:  {}  --  {:.1f}%".format(rollcounts[4], (rollcounts[4] / counter)* 100))
-            print("5s count:  {}  --  {:.1f}%".format(rollcounts[5], (rollcounts[5] / counter)* 100))
-            print("6s count:  {}  --  {:.1f}%".format(rollcounts[6], (rollcounts[6] / counter)* 100))
-            print("7s count:  {}  --  {:.1f}%".format(rollcounts[7], (rollcounts[7] / counter)* 100))
-            print("8s count:  {}  --  {:.1f}%".format(rollcounts[8], (rollcounts[8] / counter)* 100))
-            print("9s count:  {}  --  {:.1f}%".format(rollcounts[9], (rollcounts[9] / counter)* 100))
-            print("10s count: {}  --  {:.1f}%".format(rollcounts[10], (rollcounts[10] / counter) * 100))
-            print("11s count: {}  --  {:.1f}%".format(rollcounts[11], (rollcounts[11] / counter) * 100))
-            print("12s count: {}  --  {:.1f}%".format(rollcounts[12], (rollcounts[12] / counter) * 100))
+                           "Type 'x' to view statistics and exit game")
+        if roll_again.lower() == "x":
+            statistics(rollcounts, counter)
             break
 
 def roll():
@@ -60,4 +49,15 @@ def display(counter, diceroll_1, diceroll_2, diceroll_total):
           "Dice B: {}\n"
           "Total Roll: {}".format(counter, diceroll_1, diceroll_2, diceroll_total))
 
+def statistics(rollcounts, counter):
+    print("{:>3} {:>4} {:>5}".format("Roll", "Hits", "%"))
+    print("-" * 20)
+    for dice_total in rollcounts:
+        print("{:>3} {:>4} {:>6.1f}".format(dice_total, rollcounts[dice_total], (rollcounts[dice_total] / counter * 100)))
+
 main()
+
+
+
+
+
