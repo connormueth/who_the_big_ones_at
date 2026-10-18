@@ -5,10 +5,11 @@ def main():
     diceroll_1 = 0
     diceroll_2 = 0
     diceroll_total = 0
+    eventroll = 0
+    num_counter = 0
+    event_counter = 0
 
-    counter = 0
-
-    rollcounts = {
+    num_rollcounts = {
         2: 0,
         3: 0,
         4: 0,
@@ -19,20 +20,30 @@ def main():
         9: 0,
         10: 0,
         11: 0,
-        12: 0
+        12: 0,
         }
+
+    event_rollcounts = {
+        "black": 0,
+        "blue": 0,
+        "green": 0,
+        "yellow": 0
+    }
 
     while True:
         diceroll_1 = roll()
         diceroll_2 = roll()
         diceroll_total = calc_total(diceroll_1, diceroll_2)
-        counter += 1
-        rollcounts[diceroll_total] += 1
-        display(counter, diceroll_1, diceroll_2, diceroll_total)
+        eventroll = event()
+        num_counter += 1
+        event_counter += 1
+        num_rollcounts[diceroll_total] += 1
+        event_rollcounts[eventroll] += 1
+        display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll)
         roll_again = input("Press ENTER to roll again\n"
                            "Type 'x' to view statistics and exit game")
         if roll_again.lower() == "x":
-            statistics(rollcounts, counter)
+            statistics(num_rollcounts, event_rollcounts, num_counter)
             break
 
 def roll():
@@ -43,17 +54,40 @@ def calc_total(diceroll_1, diceroll_2):
     diceroll_total = diceroll_1 +diceroll_2
     return diceroll_total
 
-def display(counter, diceroll_1, diceroll_2, diceroll_total):
+def display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll):
     print("Roll #{}\n"
           "Dice A: {}\n"
           "Dice B: {}\n"
-          "Total Roll: {}".format(counter, diceroll_1, diceroll_2, diceroll_total))
+          "Total Roll: {}\n"
+          "Event Dice: {}".format(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll))
 
-def statistics(rollcounts, counter):
-    print("{:>3} {:>4} {:>5}".format("Roll", "Hits", "%"))
-    print("-" * 20)
-    for dice_total in rollcounts:
-        print("{:>3} {:>4} {:>6.1f}".format(dice_total, rollcounts[dice_total], (rollcounts[dice_total] / counter * 100)))
+def statistics(num_rollcounts, event_rollcounts, num_counter):
+    print("*" * 20)
+    print("{:>6} {:>6} {:>6}".format("Roll", "Hits", "%"))
+    print("*" * 20)
+    for dice_total in num_rollcounts:
+        print("{:>6} {:>5} {:>7.1f}".format(
+                                            dice_total,
+                                            num_rollcounts[dice_total],
+                                            (num_rollcounts[dice_total] / num_counter * 100)))
+
+    print("*" * 20)
+    for event in event_rollcounts:
+        print("{:>6} {:>5} {:>7.1f}".format(
+                                            event,
+                                            event_rollcounts[event],
+                                            (event_rollcounts[event] / num_counter * 100)))
+
+def event():
+    event = ["black",
+             "black",
+             "black",
+             "blue",
+             "green",
+             "yellow"
+             ]
+    eventroll= random.choice(event)
+    return eventroll
 
 main()
 
