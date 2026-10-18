@@ -9,6 +9,7 @@ def main():
     num_counter = 0
     event_counter = 0
     barb_position = 0
+    barbs_hit = False
 
     num_rollcounts = {
         2: 0,
@@ -36,13 +37,13 @@ def main():
         diceroll_2 = roll()
         diceroll_total = calc_total(diceroll_1, diceroll_2)
         eventroll, barb_position = event(barb_position)
-        if barb_position >= 7:
-            barb_position = 0
         num_counter += 1
         event_counter += 1
         num_rollcounts[diceroll_total] += 1
         event_rollcounts[eventroll] += 1
         display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb_position)
+        if barb_position >= 7:
+            barb_position = 0
         roll_again = input("Press ENTER to roll again\n"
                            "Type 'x' to view statistics and exit game")
         if roll_again.lower() == "x":
@@ -64,7 +65,8 @@ def display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb
           "Total Roll: {}\n"
           "Event Dice: {}\n"
           "Barb Position: {}/7".format(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb_position))
-
+    if barb_position >= 7:
+        print("***!!!BARBARIAN RAID!!!***")
 def statistics(num_rollcounts, event_rollcounts, num_counter):
     print("*" * 20)
     print("{:>6} {:>6} {:>6}".format("Roll", "Hits", "%"))
