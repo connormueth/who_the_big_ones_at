@@ -8,6 +8,7 @@ def main():
     eventroll = 0
     num_counter = 0
     event_counter = 0
+    barb_position = 0
 
     num_rollcounts = {
         2: 0,
@@ -34,12 +35,14 @@ def main():
         diceroll_1 = roll()
         diceroll_2 = roll()
         diceroll_total = calc_total(diceroll_1, diceroll_2)
-        eventroll = event()
+        eventroll, barb_position = event(barb_position)
+        if barb_position >= 7:
+            barb_position = 0
         num_counter += 1
         event_counter += 1
         num_rollcounts[diceroll_total] += 1
         event_rollcounts[eventroll] += 1
-        display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll)
+        display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb_position)
         roll_again = input("Press ENTER to roll again\n"
                            "Type 'x' to view statistics and exit game")
         if roll_again.lower() == "x":
@@ -54,12 +57,13 @@ def calc_total(diceroll_1, diceroll_2):
     diceroll_total = diceroll_1 +diceroll_2
     return diceroll_total
 
-def display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll):
+def display(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb_position):
     print("Roll #{}\n"
           "Dice A: {}\n"
           "Dice B: {}\n"
           "Total Roll: {}\n"
-          "Event Dice: {}".format(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll))
+          "Event Dice: {}\n"
+          "Barb Position: {}/7".format(num_counter, diceroll_1, diceroll_2, diceroll_total, eventroll, barb_position))
 
 def statistics(num_rollcounts, event_rollcounts, num_counter):
     print("*" * 20)
@@ -78,7 +82,7 @@ def statistics(num_rollcounts, event_rollcounts, num_counter):
                                             event_rollcounts[event],
                                             (event_rollcounts[event] / num_counter * 100)))
 
-def event():
+def event(barb_position):
     event = ["black",
              "black",
              "black",
@@ -87,7 +91,9 @@ def event():
              "yellow"
              ]
     eventroll= random.choice(event)
-    return eventroll
+    if eventroll == "black":
+        barb_position += 1
+    return eventroll, barb_position
 
 main()
 
